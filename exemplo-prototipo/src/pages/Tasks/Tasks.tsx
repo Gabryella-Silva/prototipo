@@ -1,59 +1,55 @@
-import TasksForm from "../../components/TasksForm/TasksForm";
-import TasksItem from "../../components/TasksItem/TakItem";
 import { useEffect, useState } from "react";
-
-//tipo da minha tarefa
-type Task ={
-    id:number;
-    title:string;
-    completed:boolean;
-
-}
+import { getTasks } from "../../service/tasksService";
+import type { typeTasks } from "../../type/typeTasks";
 
 export default function Tasks(){
+    //estado das tarefas vindas da API
+    const [tasks, setTasks] = useState<typeTasks[]>([]);
 
-    //armazena minhas tarefas
-    const[tasks, setTasks] = useState<Task[]>([]);
+    // estado de carregamento
+    const[ loading, setLoading] = useState(true);
 
-    // simular o carregamento incial (vai ser substituido por uma api)
+    //estado de erro
+    const [error, setError] = useState<string | null>(null);
+
+    //busca os dados da API
     useEffect(()=>{
-        const initialTasks: Task[] = [
-            {id:1, title: "Estudar", completed: true},
-            {id:1, title: "Entregar Projeto Integrador", completed: false},
+        async function loadTasks(){
+            try{
+                const data = await getTasks();
+                setTasks(data);
+            }catch (err){
+                setError("Erro ao carregar as tarefas");
+            }finally{
+                setLoading(false);
+            }
+        }
+        loadTasks();
+    }, []);
 
-        ];
+    //feedback para o usuario (carregamento da API)
+    if(loading){
+        return <p> Carregando Tarefas....</p>
+    }
+        //feedback visual de erro
+    if(error){
+        return <p>{error}</p>
+    }
 
-        setTasks(initialTasks);
+    return(
+        <section>
+            <h1> Tarefas </h1>
 
-    },[]);
-
-    //função para adicionar uma nova tarefa
-    function addTask(title:string){
-        const newTask: Task ={
-            id: Date.now(),
-            title,
-            completed:false,
-        };;
-        setTasks((prevTasks) => [...prevTasks, newTask]);
-     }
-
-     return(
-        <div>
-            <h2> Tarefas </h2>
-
-            {/* chamando e criando meu formulario */}
-            <TasksForm onAddTasks={addTask} />
-
-            {/* lista de tarefas */}
             <ul>
-                {tasks.map((task) => (
-                    <TasksItem 
-                    key={task.id}
-                    title={task.title}
-                    completed={task.completed}
-                    />
-               ))}
+                {tasks.map((task) =>(
+                    <li key={task.id} style={{textDecoration: task.completed ? "line-through" : "none",
+                      }}>
+                        {task.id}
+                        {task.title}
+                          </li>
+                ))}
             </ul>
-        </div>
-     )
+        </section>
+    )
+
 }
