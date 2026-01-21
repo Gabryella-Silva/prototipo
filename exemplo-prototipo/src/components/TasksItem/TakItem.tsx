@@ -1,24 +1,26 @@
+import type { typeTasks } from "../../type/typeTasks";
+import "./TasksItem.css";
 
-// propriedade definir o tipo do componnente
-type TasksItemProps ={
-    title: string;
-    completed: boolean;
-};
+// props que o componente vai receber
+interface TasksItemProps{
+    tasks: typeTasks;
+    onToggle: (id:number) => void; // para marcar/desmarcar
+    onRemove: (id:number) => void; // para remover
 
+}
 
-export default function TasksItem({title, completed}: TasksItemProps){
-
+export default function TasksItem ({tasks, onToggle, onRemove }: TasksItemProps){
     return(
-        <li>
-            <span
-            
-            style={{textDecoration:completed ? "line-through": "none", 
+        <ul>
+            <li className={ `tasks-item ${tasks.completed ? "completed": "" } ` }  > 
 
-            }}> 
+                {/*  quando for clicado a função ela vai chamar o onToggle passando o id da tarefa
+                alternando entre concluido e não concluido */}
+                <span onClick={() => onToggle(tasks.id)}> </span>
 
-            {title}
-
-            </span>
-        </li>
+                    {/* quando clicar no butao chama o onRemove passando pelo id */}
+                <button onClick={() => onRemove(tasks.id)}> Remover </button>
+            </li>
+        </ul>
     )
 }
