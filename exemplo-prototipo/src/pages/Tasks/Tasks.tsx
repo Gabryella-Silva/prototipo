@@ -13,62 +13,56 @@ export default function Tasks(){
     //estado de erro
     const [error, setError] = useState<string | null>(null);
 
-    //busca os dados da API
-    useEffect(()=>{
-        async function loadTasks(){
-            try{ // busca as tarefas
-                const data = await getTasks();
-                setTasks(data);
-            }catch (err){ // se ocorrer erro
-                setError("Erro ao carregar as tarefas");
-            }finally{ // finaliza o loanding
-                setLoading(false);
+  // executar apenas uma vez ao montar o componente
+  // verificar se existem tarefas salvas no localStorage
+
+  useEffect(() =>{
+    const savedTasks = localStorage.getItem("tasks");
+
+    if(savedTasks){
+        //se existir carrega no localStorage
+        setTasks(JSON.parse(savedTasks));
+        setLoading(false);
+    }else{
+        // Caso nao exista buscar na API
+        loadTasksFromApi();
+    }
+  }, []);
+
+  async function loadTasksFromApi() {
+    try {
+        const data = await getTasks();
+        setTasks(data)
+    }catch{
+        setError("Erro ao carregar tarefas");
+    }finally{
+        setLoading(false)
+    }
+ }
+
+ // sempre que o estado do (tasks) mudar, vai salvar no local
+        useEffect(() => {
+            if(tasks.length > 0){
+                localStorage.setItem("tasks", JSON.stringify(tasks));
             }
-        }
-        loadTasks();
-    }, []);
+        }, [tasks]);
 
-        //alternar o status da tarefa (concluida/nao concluida)
-
+        // alterar o status da tarefa (concluida/nao concluida)
         function handleToggleTasks(id:number){
-            const updatedTasks = tasks.map((task) => 
+            const updateTasks = tasks.map((task) => 
                 task.id === id
             ? {...task, completed: !task.completed}
-            : task
+            :task
             );
-
-            setTasks(updatedTasks)
+                setTasks(updateTasks);
         }
-        // remover tarefa pelo id
+
+        // remover uma tarefa da lista
         function handleRemoveTasks(id:number){
-            const updatedTasks = tasks.filter(
+            const updateTasks = tasks.filter(
                 (task) => task.id !== id
             );
-            setTasks(updatedTasks)
+            setTasks(updateTasks);
         }
-
-
-
-
-    //feedback para o usuario (carregamento da API)
-    if(loading){
-        return <p className="feedback"> Carregando Tarefas....</p>
-    }
-        //feedback visual de erro
-    if(error){
-        return <p className="feedback">{error}</p>
-    }
-
-    return(
-        <section className="tasks-container">
-            <h1> Minhas tarefas </h1>
-            < TasksList
-            tasks={tasks}
-            onToggle={handleToggleTasks}
-            onRemove={handleRemoveTasks}
-            />
-     
-        </section>
-    )
 
 }

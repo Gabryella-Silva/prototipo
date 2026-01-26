@@ -1,0 +1,12 @@
+.tasks-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* mensagem exibida quando nao tem tarefa */
+.empty{
+    text-align: center;
+    margin-top: 24px;
+    color:#666
+}

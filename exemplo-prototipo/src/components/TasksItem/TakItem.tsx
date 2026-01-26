@@ -11,7 +11,7 @@ interface TasksItemProps{
 
 export default function TasksItem ({tasks, onToggle, onRemove }: TasksItemProps){
     return(
-        <ul>
+        
             <li className={ `tasks-item ${tasks.completed ? "completed": "" } ` }  > 
 
                 {/*  quando for clicado a função ela vai chamar o onToggle passando o id da tarefa
@@ -21,6 +21,6 @@ export default function TasksItem ({tasks, onToggle, onRemove }: TasksItemProps)
                     {/* quando clicar no butao chama o onRemove passando pelo id */}
                 <button onClick={() => onRemove(tasks.id)}> Remover </button>
             </li>
-        </ul>
+        
     )
 }

@@ -1,0 +1,32 @@
+.tasks-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    background-color: white;
+    border-radius: 6px;
+
+}
+
+/* no texto */
+.tasks-item span{
+    cursor: pointer;
+}
+
+/* quando a tarefa estiver concluida (risca o texto) */
+.tasks-item.completed span{
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* no botao de remover */
+
+.tasks-item button{
+    border: none;
+    background-color: aquamarine;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
