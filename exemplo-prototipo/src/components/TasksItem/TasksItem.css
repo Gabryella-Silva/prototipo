@@ -24,9 +24,13 @@
 
 .tasks-item button{
     border: none;
-    background-color: aquamarine;
+    background-color: #1f2933;
     color: white;
     padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.tasks-item button:hover{
+    background-color: #343d47;
 }
