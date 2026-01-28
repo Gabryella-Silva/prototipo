@@ -16,7 +16,9 @@ export default function TasksItem ({tasks, onToggle, onRemove }: TasksItemProps)
 
                 {/*  quando for clicado a função ela vai chamar o onToggle passando o id da tarefa
                 alternando entre concluido e não concluido */}
-                <span onClick={() => onToggle(tasks.id)}> </span>
+                <span onClick={() => onToggle(tasks.id)}>
+                     {tasks.title}
+                     </span>
 
                     {/* quando clicar no butao chama o onRemove passando pelo id */}
                 <button onClick={() => onRemove(tasks.id)}> Remover </button>

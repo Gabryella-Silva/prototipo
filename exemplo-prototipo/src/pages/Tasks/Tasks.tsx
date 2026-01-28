@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTasks } from "../../service/tasksService";
 import type { typeTasks } from "../../type/typeTasks";
 import TasksList from "../../components/TasksList/TasksList";
+import "./Tasks.css"
 
 export default function Tasks(){
     //estado das tarefas vindas da API
@@ -64,5 +65,30 @@ export default function Tasks(){
             );
             setTasks(updateTasks);
         }
+
+        //Feedback de carregamento
+        if(loading){
+            return <p className="feedback">
+                    Carregando tarefas
+            </p>
+        }
+
+        //feedback de erro 
+        if(error){
+            return <p className=" feedback-error"> {error }</p>
+        }
+
+        return(
+            <section className=" tasks-container">
+                    <h1> Minhas Tarefas </h1>
+
+                    {/* Lista de tarefas */}
+                    <TasksList 
+                    tasks={tasks}
+                    onToggle={handleToggleTasks}
+                    onRemove={handleRemoveTasks}
+                   />
+             </section>
+        )
 
 }
