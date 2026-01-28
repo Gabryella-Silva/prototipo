@@ -1,5 +1,5 @@
 import type { typeTasks } from "../../type/typeTasks";
-import TasksItem from "../TasksItem/TakItem";
+import TasksItem from "../TasksItem/TasksItem";
 import "./TasksList.css";
 
 // props que o componente vai receber
